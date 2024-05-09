@@ -1,15 +1,23 @@
 #import "@preview/unequivocal-ams:0.1.0": ams-article, theorem, proof
 
 #show: ams-article.with(
-  title: [Mathematical Theorems],
+  title: [Fortuna - A Randomness Beacon],
   authors: (
     (
-      name: "Ralph Howard",
-      department: [Department of Mathematics],
-      organization: [University of South Carolina],
-      location: [Columbia, SC 29208],
-      email: "howard@math.sc.edu",
-      url: "www.math.sc.edu/~howard"
+      name: "Kasey White",
+      department: [Survey Corps],
+      organization: [Cardano Foundation],
+      location: [Dammstrasse 16, 6300 Zug, CH],
+      email: "kasey.white@cardanofoundation.org",
+      url: "https://github.com/microproofs"
+    ),
+    (
+      name: "Lucas Rosa",
+      department: [Survey Corps],
+      organization: [Cardano Foundation],
+      location: [Dammstrasse 16, 6300 Zug, CH],
+      email: "lucas.rosa@cardanofoundation.org",
+      url: "https://rvcas.dev"
     ),
   ),
   abstract: lorem(100),
