@@ -24,30 +24,30 @@
   bibliography: bibliography("fortuna.bib"),
 )
 
-Call me Ishmael. Some years ago --- never mind how long precisely ---
-having little or no money in my purse, and nothing particular to
-interest me on shore, I thought I would sail about a little and see
-the watery part of the world. It is a way I have of driving off the
-spleen, and regulating the circulation.  Whenever I find myself
-growing grim about the mouth; whenever it is a damp, drizzly November
-in my soul; whenever I find myself involuntarily pausing before coffin
-warehouses, and bringing up the rear of every funeral I meet; and
-especially whenever my hypos get such an upper hand of me, that it
-requires a strong moral principle to prevent me from deliberately
-stepping into the street, and methodically knocking people's hats off
---- then, I account it high time to get to sea as soon as I can. This
-is my substitute for pistol and ball. With a philosophical flourish
-Cato throws himself upon his sword; I quietly take to the ship. There
-is nothing surprising in this. If they but knew it, almost all men in
-their degree, some time or other, cherish very nearly the same
-feelings towards the ocean with me. @netwok2020
+= What is Fortuna?
 
-There now is your insular city of the Manhattoes, belted round by
-wharves as Indian isles by coral reefs - commerce surrounds it with
-her surf. Right and left, the streets take you waterward. Its extreme
-down-town is the battery, where that noble mole is washed by waves,
-and cooled by breezes, which a few hours previous were out of sight of
-land. Look at the crowds of water-gazers there.
+Fortuna is a protocol enforced by a spend and mint validator that verifies Proof of Work 
+transactions on the Cardano blockchain. By mimicing the attributes of
+a Bitcoin block header inside a datum, Fortuna is able to dynamically adjust its difficulty
+based on the demand of the network. This averages out to a Fortuna transaction 
+every 10 minutes. The Fortuna protocol pays out TUNA to the creator of the transaction 
+as a reward for their work.
+
+= What can Fortuna provide?
+
+
+= FortunaV1 Design
+
+== Overview
+
+
+== Pros
+
+
+== Cons
+
+
+= How to Hard Fork from an active policy
 
 Anyone caught using formulas such as $sqrt(x+y)=sqrt(x)+sqrt(y)$
 or $1/(x+y) = 1/x + 1/y$ will fail.
@@ -72,7 +72,25 @@ $ integral_(-oo)^oo e^(-x^2) dif x = sqrt(pi) $
   what we have just done $x^2 = (−x)^2 > 0$. So in all cases $x^2 ≥ 0$.
 ]
 
-= Introduction
+= FortunaV2 Design
+
+== Overview
+
+== Differences from FortunaV1
+
+== Pros
+
+== Cons
+
+
+= FortunaV2 Governance
+
+
+== Why Governance?
+
+== How Voting Works
+
+== The Future of Fortuna
 This is a new section.
 You can use tables like @solids.
 
@@ -94,8 +112,6 @@ You can use tables like @solids.
   caption: "Solids",
 ) <solids>
 
-== Things that need to be done
-Prove theorems.
 
-= Background
-#lorem(40)
+
+
