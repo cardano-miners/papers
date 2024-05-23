@@ -20,7 +20,7 @@
       url: "https://rvcas.dev"
     ),
   ),
-  abstract: lorem(100),
+  abstract: "Fortuna is a Proof of Work protocol for verifying mining transactions on the Cardano blockchain. The protocol explores what the minimum moving parts are required to verify Proof of Work in a extremely limited environment like the PlutusVM. The work done with Fortuna could help inspire a new wave of Proof of Work protocols which are verifiable in a smart contract. For today, we will explore the Fortuna protocol and its possible use cases like randonmness and consensus in dApps on Cardano. We will also explore the FortunaV2 design and how it improves upon the FortunaV1 design.",
   bibliography: bibliography("fortuna.bib"),
 )
 
@@ -35,11 +35,15 @@ transactions on the Cardano blockchain. By mimicing the attributes of
 a Bitcoin block header inside a datum, Fortuna is able to dynamically adjust its difficulty
 based on the demand of the network. This averages out to a Fortuna transaction 
 every 10 minutes. The Fortuna protocol pays out TUNA to the creator of the transaction 
-as a reward for their work. Fortuna's token is freely tradable within the Cardano ecosystem.
+as a reward for their work. Fortuna's token is freely tradable within the Cardano ecosystem. 
 
+There are 3 core concepts behind how a proof of work algorithm works on-chain.
 
+  1. The key concept behind Fortuna is taking a PoW alogorithm and isolating the validation of the "Work" done to be verifiable in a smart contract. Smart Contracts have a very limited execution and memory size budgets. On Cardano you can only pass in about a max of 14kb of information to a smart contract. Anything that does not fit into that size must be created on-chain or reworked to fit into the budget. In the case of FortunaV1 and FortunaV2, the validation of the work can be done via a hash of the previous Fortuna state and the miner nonce. This hash is then compared against a byte array formed from the current blocks difficulty. 
 
+  2. This leads us to the next part of Fortuna how tracks when a block was mined. In order to keep an average of 10 minutes per block the state must keep track of the time each time a block is mined. In Cardano, we are given a posix time range the transaction took place in. By placing a max range between the upper and lower bounds we can use the average to give us generally accurate estimates to the exact time a block was mined.
 
+  3. The final part about Fortuna is the difficulty adjustment. The difficulty is currently adjusted based on a similar cadence to bitcoin, every 2016 blocks (an epoch). The time from the epoch is tracked and compared to the actual time of 2 weeks which is the expected time for 2016 blocks to be mined. The difficulty is adjusted based on the difference between the expected time and the actual time. The difficulty can be adjusted upward a max of 4x or downward a min of 1/4x. This is to prevent the difficulty from being gamed too far in either direction by miners.
 
 = FortunaV1 Design
 
