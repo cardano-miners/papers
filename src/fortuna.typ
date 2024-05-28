@@ -68,9 +68,10 @@ Fortuna transaction diagram here
 
 == Cons
 - FortunaV1 did not enforce the miner credential in the transaction submitted, which allowed for front-running to steal a miners rewards.
-- FortunaV1 did not have a governance mechanism to adjust the protocol or PoW algorithm.
+- FortunaV1 did not have a governance mechanism to adjust the protocol or PoW algorithm. The policy id was tied to the spend validator, which made it impossible to change the PoW algorithm without a hard fork.
 - FortunaV1 kept it's history as an interlink, Which allowed for easy creation of light nodes that could verify the fortuna history, but this is only usable to off-chain entities.
 - Bloated datum size due to the interlink history.
+
 
 
 = How to Hard Fork from an active policy
