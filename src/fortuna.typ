@@ -1,4 +1,309 @@
 #import "@preview/unequivocal-ams:0.1.0": ams-article, theorem, proof
+#import "templates/transaction.typ": *
+
+
+#let miner_input = (
+      name: "CDP Params",
+      address: "Synthetics Script",
+      reference: true,
+      value: (
+        p_Synthetic: "1",
+      ),
+      datum: (
+        collateral_assets: [AssetClass\[\]],
+        weights: [Int\[\]],
+        denominator: [Int],
+        minimum_outstanding: [Int],
+        interest_rates: [(PosixTime,Int)[]],
+        max_proportions: [Int\[\]],
+        max_liquidation_return: [Int],
+        treasury_liquidation_share: [Int],
+        redemption_share: [Int],
+        fee_token_discount: [Int]
+      )
+    )
+
+#let upgradable_ref = (
+      name: "Upgradable Ref",
+      reference: true,
+      value: (
+        Synthetics_Ref_NFT: "1",
+      ),
+    )
+
+#let gov_input(is_ref) = (
+      name: "Gov Utxo",
+      reference: is_ref,
+      value: (
+        Gov_NFT: [1],
+      ),
+      datum: (
+        price_feed_script_hash: [String],
+        gov_data: [Data]
+      ),
+    )
+
+#let cdp_utxo = (
+      name: "CDP UTxO",
+      address: "Synthetics Script",
+      value: (
+        ADA: [$q_0 + "minAda"$],
+        "Coll_Token₁": [$q_1$],
+        "": [$dots$],
+        "Coll_Tokenₙ": [$q_n$],
+        CDP_Lock_Token: "1"
+      ),
+      datum: (
+        "owner":[CDP Credential],
+        "synthetic_asset":[AssetName],
+        "synthetic_amount":[Int],
+        "start_time":[PosixTime]
+      ),
+      redeemer: "( )"
+    )
+
+
+
+#let fortunaV1_Genesis = transaction(
+  "Genesis",
+  inputs: (
+    ( name: "User Input",
+      address: "User Address",
+      reference: false,
+      value: (
+        ADA: [$"minAda" + X$],
+      )),
+  ),
+  outputs: (
+    (
+      name: "Fortuna Output",
+      address: "FortunaV1 Script",
+      value: (
+        ADA: [$"minAda"$],
+        lord_tuna: "1"
+      ),
+      datum: (
+        block_number: 0,
+        current_hash: [User input ref hashed],
+        leading_zeros: 5,
+        target_number: 65535,
+        epoch_time: 0,
+        current_posix_time: [Current Time],
+        extra: [Data],
+        interlink: [[]]
+      )
+    ),
+    (
+      name: "Change Output",
+      address: "User Address",
+      value: (
+        ADA: [$"X"$],
+      ),
+    )
+  ),
+  notes: [
+   
+  ]
+)
+
+
+
+#let fortunaV1_Mine = transaction(
+  "Mine",
+  inputs: (
+    ( name: "Fortuna Input",
+      address: "FortunaV1 Script",
+      reference: false,
+      value: (
+        ADA: [$"minAda"$],
+        lord_tuna: [$"1"$]
+      ),
+      datum: (
+        block_number: [B],
+        current_hash: [Hash],
+        leading_zeros: [Int],
+        target_number: [Int],
+        epoch_time: [PosixTime],
+        current_posix_time: [PosixTime],
+        extra: [Data],
+        interlink: [[ByteArray]]
+      ),
+      redeemer: [Nonce]
+    ),
+    ( name: "Miner Input",
+      address: "Miner Address",
+      reference: false,
+      value: (
+        ADA: [$"X"$],
+      )),
+  ),
+  outputs: (
+    (
+      name: "Fortuna Output",
+      address: "FortunaV1 Script",
+      value: (
+        ADA: [$"minAda"$],
+        lord_tuna: [$"1"$]
+      ),
+      datum: (
+        block_number: [B + 1],
+        current_hash: [Hash of TargetState],
+        leading_zeros: [Int],
+        target_number: [Int],
+        epoch_time: [PosixTime],
+        current_posix_time: [PosixTime],
+        extra: [Data],
+        interlink: [[ByteArray]]
+      )
+    ),
+    (
+      name: "Change Output",
+      address: "Miner Address",
+      value: (
+        ADA: [$"X"$],
+        TUNA: "50"
+      ),
+    )
+  ),
+  notes: [
+   
+  ]
+)
+
+#let fork_HardFork = transaction(
+  "Hard Fork",
+  inputs: (
+    ( name: "Fortuna Input",
+      address: "FortunaV1 Script",
+      reference: true,
+      value: (
+        ADA: [$"minAda"$],
+        lord_tuna: [$"1"$]
+      ),
+      datum: (
+        block_number: [B],
+        current_hash: [Hash],
+        leading_zeros: [Int],
+        target_number: [Int],
+        epoch_time: [PosixTime],
+        current_posix_time: [PosixTime],
+        extra: [Data],
+        interlink: [[ByteArray]]
+      ),
+    ),
+    ( name: "User Input",
+      address: "User Address",
+      reference: false,
+      value: (
+        ADA: [$"X" + "minAda*2"$],
+      )),
+  ),
+  outputs: (
+    (
+      name: "Lock Output",
+      address: "HardFork Script",
+      value: (
+        ADA: [$"minAda"$],
+        lock_state: "1"
+        
+      ),
+      datum: (
+        block_number: [B],
+        current_locked_tuna: 0
+      )
+    ),
+    (
+      name: "Fortuna Output",
+      address: "FortunaV2 Spend Script",
+      value: (
+        ADA: [$"minAda"$],
+        "[TUNA, Spend Hash]": "1",
+        "[COUNTER, B]": "1"
+      ),
+      datum: (
+        block_number: [B],
+        current_hash: [Hash],
+        leading_zeros: [Int],
+        target_number: [Int],
+        epoch_time: [PosixTime],
+        current_posix_time: [PosixTime],
+        merkle_root: [MerkleRoot]
+      )
+    ),
+    (
+      name: "Change Output",
+      address: "User Address",
+      value: (
+        ADA: [$"X"$],
+      ),
+    )
+  ),
+  withdraws: ("Withdraw from \n Fork Script", ""),
+  notes: [
+   The redeemer for the Withdraw purpose is HardFork(output_index)
+   #linebreak()
+   The redeemer for the Mint purpose in FortunaV2 is Genesis
+  ]
+)
+
+
+#let fork_LockRedeem = transaction(
+  "Hard Fork",
+  inputs: (
+    ( name: "Lock Input",
+      address: "HardFork Script",
+      reference: false,
+      value: (
+        ADA: [$"minAda"$],
+        lock_state: [$"1"$],
+        TUNA: [$"T"$]
+      ),
+      datum: (
+        block_number: [B],
+        current_locked_tuna: [T]
+      ),
+    ),
+    ( name: "User Input",
+      address: "User Address",
+      reference: false,
+      value: (
+        ADA: [$"X"$],
+        TUNA: [$"N"$]
+      )),
+  ),
+  outputs: (
+    (
+      name: "Lock Output",
+      address: "HardFork Script",
+      value: (
+        ADA: [$"minAda"$],
+        lock_state: [$"1"$],
+        TUNA: [$"T + N"$]
+      ),
+      datum: (
+        block_number: [B],
+        current_locked_tuna: [T + N]
+      )
+    ),
+    (
+      name: "Change Output",
+      address: "User Address",
+      value: (
+        ADA: [$"X"$],
+        TUNAV2: "N"
+      ),
+    )
+  ),
+  withdraws: ("Withdraw from \n Fork Script", ""),
+  notes: [
+   The redeemer for the Withdraw purpose is Lock(output_index, amount)
+   #linebreak()
+   The redeemer for the Mint purpose in FortunaV2 is Redeem
+   #linebreak()
+   The current_locked_tuna is always less than or equal to the emitted TUNA at block height B
+  ]
+)
+
 
 #show: ams-article.with(
   title: [Fortuna - A Randomness Beacon],
@@ -25,7 +330,7 @@
 )
 
 = Why Fortuna?
-There are dApps in DeFi (Decentralized Finance) that require sources of future randomness or some fair way to select a winner for consensus. On other chains, like Ethereum, one way dApps have enforced randomness is by depending on data from the block mined that is made available to the contract on execution. Note there is also VRFs via Chainlink on Ethereum too. In Cardano, a transaction does not have any notion of the block it is located in, so for any dApp the source for randomness must be determined in advance. This is where Fortuna comes in. Fortuna can act as a source of randomness for dApps on Cardano. Fortuna also can be leveraged for consensus algorithms on Cardano. A dApp can pay miners additional funds besides the protocol reward to determine ordering or selection on some consensus algorithm. This is a way to further incentivize the importance of the Fortuna protocol. An example of this is L2's which require some ordering mechanism when posting proofs of existing state to the main chain.
+There are dApps in DeFi (Decentralized Finance) that require sources of future randomness or some fair way to select a winner for consensus. On other chains, like Ethereum, one way dApps have enforced randomness is by depending on data from the block mined that is made available to the contract on execution. Note there is also VRFs via Chainlink on Ethereum too. In Cardano, a transaction does not have any notion of the block it is located in, so for any dApp the source for randomness must be determined in advance. This is where Fortuna comes in. Fortuna can act as a source of randomness for dApps on Cardano. Fortuna also can be leveraged for consensus algorithms on Cardano. A dApp can pay miners additional funds besides the protocol reward to determine ordering or selection on some consensus algorithm. This is a way to further incentivize the importance of the Fortuna protocol. An example of this is L2's which require a sequencing mechanism when posting proofs of existing state to the main chain.
 
 
 = What is Fortuna?
@@ -104,9 +409,6 @@ The leading zeros are checked to be either greater than or equals to the Fortuna
 If equal then the 2 non-zero bytes are checked to be less than the Fortuna State's target number.
 If either conditions is met the transaction is considered valid and the Fortuna State is updated.
 
-
-Fortuna transaction diagram here
-
 == Pros
 - FortunaV1 is a really simple protocol consisting of 2 validators in a single script and a datum and NFT.
 - FortunaV1 is a (possibly self-sufficient) decentralized source of randomness for dApps on Cardano.
@@ -121,10 +423,16 @@ Fortuna transaction diagram here
 
 == More on Interlink
 
-Interlink is a nice to have as a marker of previous fortuna history. The idea is the validity of the current Fortuna hash could be validated quickly without the
-need for Cardano's history or a trust in the validators.
+Interlink is a nice to have as a marker of previous fortuna history. The idea is the validity of the current Fortuna hash could be validated quickly without the need for Cardano's history or a trust in the validators.
 
 In Fortuna V2 we opted for a far more succint structure (Sparse Merkle Trees, or in the final implementation Merkle Patricia Forestry).
+
+#pagebreak()
+#fortunaV1_Genesis
+#pagebreak()
+#fortunaV1_Mine
+#pagebreak()
+
 
 = How to Hard Fork from an active policy
 
@@ -161,9 +469,11 @@ type LockState {
 }
 ```
 
-Hard Fork Genesis transaction here
-
-Hard Fork Redeem transaction here
+#pagebreak()
+#fork_HardFork
+#pagebreak()
+#fork_LockRedeem
+#pagebreak()
 
 = FortunaV2 Design
 
